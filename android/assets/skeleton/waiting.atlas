@@ -1,0 +1,12 @@
+
+waiting.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+huaban
+  rotate: false
+  xy: 2, 2
+  size: 22, 27
+  orig: 22, 68
+  offset: 0, 19
+  index: -1

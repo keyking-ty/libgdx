@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">微信下载</string>
+    <string name="loginStr">登   陆</string>
+    <string name="userStr">用户名称  :</string>
+    <string name="userNull">请输入用户名称</string>
+    <string name="pwdStr">用户密码  :</string>
+    <string name="pwdNull">请输入用户密码</string>
+    <string name="downStr">下载用户</string>
+    <string name="clearStr">清空通讯录</string>
+    <string name="commitStr">提交用户数据</string>
+    <string name="updateStr">修改密码</string>
+    <string name="exitStr">退出系统</string>
+    <string name="downLeft">剩余数量   :</string>
+    <string name="downNum">下载数量  :</string>
+    <string name="downNull">请输入下载数量</string>
+    <string name="commiteName">客户名称  :</string>
+    <string name="commiteNameNull">请输入客户名称</string>
+    <string name="commiteTel">客户电话  :</string>
+    <string name="commiteTelNull">请输入客户电话</string>
+    <string name="update1">旧的密码  :</string>
+    <string name="update1Null">请输入 旧的密码</string>
+    <string name="update2">新的密码  :</string>
+    <string name="update2Null">请输入 新的密码</string>
+    <string name="update3">重复密码  :</string>
+    <string name="update3Null">请确认 新的密码</string>
+    <string name="http_url">http://36.7.67.250:9008/contact-service/logic</string>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80808080" >
+    <TableLayout android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal" >
+        <TableRow>
+
+            <TextView
+                android:id="@+id/userTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/userStr"
+                android:textColor="#ff000000" />
+
+            <EditText
+                android:id="@+id/userEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/userNull" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/pwdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pwdStr"
+                android:textColor="#ff000000" />
+
+            <EditText
+                android:id="@+id/pwdEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/pwdNull"
+                android:inputType="textPassword" />
+        </TableRow>
+
+        <TableRow android:gravity="center" >
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="@string/loginStr" />
+        </TableRow>
+    </TableLayout>
+
+</FrameLayout>

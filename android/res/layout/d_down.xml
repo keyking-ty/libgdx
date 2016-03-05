@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/down_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#80808080"
+    android:orientation="horizontal" >
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/d_down_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/downLeft"
+            android:textColor="#ff000000" />
+
+        <TextView
+            android:id="@+id/d_down_left_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff0000" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/d_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/downNum"
+            android:textColor="#ff000000" />
+
+        <EditText
+            android:id="@+id/input_num"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/downNull"
+            android:inputType="number"
+            android:minWidth="100dip" />
+    </TableRow>
+
+</TableLayout>
