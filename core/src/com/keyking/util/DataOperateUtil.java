@@ -1,7 +1,10 @@
 package com.keyking.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.keyking.data.TelInfo;
 import com.keyking.frame.LoginScreen;
 
-public class ImportUtil implements Instances{
+public class DataOperateUtil implements Instances{
 	
 	public static String getExtends(String fileName){
 		int index = fileName.lastIndexOf(".");
@@ -144,7 +147,7 @@ public class ImportUtil implements Instances{
 					name       = randomName();
 					telephone  = ss[0];
 				}
-				telephone = check(telephone);
+				check(telephone);
 				if (telephone != null){
 					TelInfo tel = new TelInfo();
 					tel.setName(name);
@@ -164,9 +167,6 @@ public class ImportUtil implements Instances{
     	StringBuffer sb = new StringBuffer();
     	for (int i = 0 ; i < str.length() ; i ++){
     		char c = str.charAt(i);
-    		if (i == 0 && c != '1'){
-    			continue;
-    		}
     		if (c >= '0' && c <= '9'){
     			sb.append(c);
     		}
@@ -174,7 +174,26 @@ public class ImportUtil implements Instances{
     	if (sb.length() < 11){
     		return null;
     	}
-		return sb.toString();
+    	str = sb.toString();
+		int index = str.indexOf("1");
+		if (index > 0){
+			str = str.substring(index,str.length());
+		}
+		return str;
 	}
+     
+	public static void export(String fileName, List<TelInfo> tels){
+    	try {
+			FileWriter writer = new FileWriter(new File(fileName + "/" + "tels.txt"));
+			for (TelInfo tel : tels){
+				writer.write(tel.getTelephone() + "\n");
+			}
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
 }
+ 
  

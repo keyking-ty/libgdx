@@ -24,3 +24,4 @@ public class DownInfoRequest extends RequestEntity {
 	
 }
  
+ 

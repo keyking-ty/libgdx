@@ -19,3 +19,4 @@ public class UserFixRequest extends RequestEntity {
 	}
 }
  
+ 

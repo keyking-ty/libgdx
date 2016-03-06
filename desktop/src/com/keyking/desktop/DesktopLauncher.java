@@ -9,12 +9,13 @@ public class DesktopLauncher implements Instances{
 	
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "微信资源";
+		config.title = "新威投资";
 		//config.fullscreen = true;
 		config.addIcon("title.jpg",FileType.Internal);
 		//config.width = 1280;
 		new LwjglApplication(ENGINE,config);
 	}
 }
+ 
  
  

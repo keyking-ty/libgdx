@@ -96,7 +96,7 @@ public class AdminScreen extends GameScreen {
 		TextButton uadd  = UI.createTextButton("添加员工","check");
 		TextButton ured  = UI.createTextButton("删除员工","check");
 		TextButton ufix  = UI.createTextButton("员工修改","check");
-		TextButton data  = UI.createTextButton("数据导入","check");
+		TextButton data  = UI.createTextButton("数据操作","check");
 		TextButton reset = UI.createTextButton("重置任务","check");
 		float x = 0 ,y = S_HEIGHT - open.getHeight() - SkinFactory.FONT_SIZE - 15;
 		float space = (S_WIDTH - gadd.getWidth() * 4)/5;
@@ -166,7 +166,26 @@ public class AdminScreen extends GameScreen {
 		data.addListener(new CheckSelcetClick(){
 			@Override
 			public void _clicked(InputEvent event, float x, float y) {
-				refreshDataImport();
+				Dialog tip = new Dialog("选择",SKIN.getUISkin()){
+					protected void result (Object object) {
+						if (object.equals(true)){
+							refreshDataImport();
+						}else{
+							refreshDataOut();
+						}
+					}
+				};
+				Table table = tip.getButtonTable();
+				Label label = UI.createLabel("          选择操作类型","red");
+				table.add(label).center().row();
+				TextButton sure = UI.createTextButton("导入");
+				table.add(sure).left();
+				tip.setObject(sure,true);
+				TextButton canle = UI.createTextButton("导出");
+				table.add(canle).right();
+				tip.setObject(canle,false);
+				tip.key(Keys.ENTER,true).key(Keys.ESCAPE,false);
+				tip.show(stage);
 			}
 		});
 		stage.addActor(data);
@@ -366,6 +385,15 @@ public class AdminScreen extends GameScreen {
 		showCancle();
 	}
 	
+	public void doExport(){
+		message("数据导出成功");
+		if (opration != null){
+			opration.setChecked(false);
+			opration = null;
+		}
+		clear();
+	}
+	
 	public void doTelInfoAdd(){
 		message("数据导入成功");
 		if (opration != null){
@@ -373,6 +401,112 @@ public class AdminScreen extends GameScreen {
 			opration = null;
 		}
 		clear();
+	}
+	
+	public void refreshDataOut(){
+		clear();
+		showWindow.setName("7");
+		Skin skin = SKIN.getUISkin();
+		Label label = UI.createLabel("数据导出","red");
+		showWindow.add(label).center().row();
+		Table table = new Table(skin);
+		table.add("导出目录:");
+		TextField name = UI.createTextField(300,30);
+		name.setName("1");
+		table.add(name).left();
+		TextButton open = UI.createTextButton("浏览");
+		table.add(open).left().row();
+		open.setUserObject(name);
+		open.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				TextField name = (TextField)event.getListenerActor().getUserObject();
+				JFileChooser chooser = new JFileChooser("D:\\");
+			    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+			    	String fileName = chooser.getSelectedFile().getAbsolutePath();
+			    	name.setText(fileName);
+			    	name.setCursorPosition(fileName.length());
+			    }
+			}
+		});
+
+		table.add("开始日期:");
+		TextField time = UI.createTextField(300,30);
+		time.setName("2");
+		table.add(time).left().row();
+		table.add("结束日期:");
+		time = UI.createTextField(300,30);
+		time.setName("3");
+		table.add(time).left().row();
+		
+		final CheckBox check = new CheckBox("删除数据",skin,"warning");
+		check.setName("4");
+		check.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent inputevent, float f, float f1) {
+				if (!check.isChecked()){
+					return;
+				}
+				Dialog tip = new Dialog("警告",SKIN.getUISkin()){
+					protected void result (Object object) {
+						if (object.equals(true)){
+							check.setChecked(true);
+						}else{
+							check.setChecked(false);
+						}
+					}
+				};
+				Table table = tip.getButtonTable();
+				Label label = UI.createLabel("          确定删除数据?","red");
+				table.add(label).center().row();
+				TextButton sure = UI.createTextButton("确定");
+				table.add(sure).left();
+				tip.setObject(sure,true);
+				TextButton canle = UI.createTextButton("返回");
+				table.add(canle).right();
+				tip.setObject(canle,false);
+				tip.key(Keys.ENTER,true).key(Keys.ESCAPE,false);
+				tip.show(stage);
+			}
+		});
+		table.add("   ");
+		table.add(check).row();
+		
+		ScrollPane pane = new ScrollPane(table,SKIN.getUISkin());
+		showWindow.add(pane).left().row();
+		showWindow.add(UI.createLabel("  ")).row();
+		TextButton sure = UI.createTextButton("确定");
+		sure.setPosition(0,0);
+		sure.setUserObject(table);
+		sure.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Table table = (Table)event.getListenerActor().getUserObject();
+				TextField field = searchFromTable(table,1);
+				String name = field.getText();
+				if (name == null || name.equals("")){
+					message("请选择导出文件");
+					return;
+				}
+				field = searchFromTable(table,2);
+				String time1 = field.getText();
+				if (time1 == null || time1.equals("")){
+					message("请输入开始日期(格式:2016-05-06)");
+					return;
+				}
+				field = searchFromTable(table,3);
+				String time2 = field.getText();
+				if (time2 == null || time2.equals("")){
+					message("请输入结束日期(格式:2016-05-07)");
+					return;
+				}
+				CheckBox check = searchFromTable(table,4);
+				NET.exportData(name,time1,time2,check.isChecked());
+			}
+		});
+		showWindow.addActor(sure);
+		showCancle();
 	}
 	
 	public void refreshDataImport(){
@@ -383,11 +517,11 @@ public class AdminScreen extends GameScreen {
 		showWindow.add(label).center().row();
 		Table table = new Table(skin);
 		table.add("目录:").left();
-		TextField name = UI.createTextField(100,30);
+		TextField name = UI.createTextField(300,30);
 		name.setName("1");
-		table.add(name).left();
+		table.add(name);
 		TextButton open = UI.createTextButton("浏览");
-		table.add(open).left().row();
+		table.add(open).row();
 		open.setUserObject(name);
 		open.addListener(new ClickListener(){
 			@Override
@@ -1132,4 +1266,5 @@ public class AdminScreen extends GameScreen {
 		return false;
 	}
 }
+ 
  

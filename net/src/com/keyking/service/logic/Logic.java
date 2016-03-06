@@ -8,3 +8,4 @@ public interface Logic{
 	public RespEntity doLogic(DataBuffer buffer,String logicName) throws Exception;
 }
  
+ 

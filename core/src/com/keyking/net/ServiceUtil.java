@@ -20,6 +20,7 @@ import com.keyking.net.message.impl.admin.GroupDelRequest;
 import com.keyking.net.message.impl.admin.GroupFixRequest;
 import com.keyking.net.message.impl.admin.GroupResetRequest;
 import com.keyking.net.message.impl.admin.RefreshRequest;
+import com.keyking.net.message.impl.admin.TelInfoDown;
 import com.keyking.net.message.impl.admin.TelInfoRequest;
 import com.keyking.net.message.impl.admin.UserAddRequest;
 import com.keyking.net.message.impl.admin.UserDelRequest;
@@ -28,14 +29,14 @@ import com.keyking.net.message.impl.user.ChangePasswardRequest;
 import com.keyking.net.message.impl.user.CommiteRequest;
 import com.keyking.net.message.impl.user.DownInfoRequest;
 import com.keyking.net.reader.Reader;
-import com.keyking.util.ImportUtil;
+import com.keyking.util.DataOperateUtil;
 import com.keyking.util.Instances;
 
 public class ServiceUtil implements Instances , HttpResponseListener{
 
 	private static ServiceUtil instance = new ServiceUtil();
 	
-	protected final static String SERVICE_ADDRESS_URL = "http://36.7.67.250:9008/contact-service/logic";
+	protected final static String SERVICE_ADDRESS_URL = "http://36.7.67.250:9001/contact-service/logic";
 	
 	//private final static String SERVICE_ADDRESS_URL = "http://keyking-ty.xicp.net/contact-service/logic";
 	
@@ -107,7 +108,7 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 	
 	public void importData(String fileName,boolean flag){
 		ENGINE.getGameScreen().showLoading(true);
-		List<TelInfo> tels = ImportUtil.readText(fileName,flag);
+		List<TelInfo> tels = DataOperateUtil.readText(fileName,flag);
 		if (tels.size() > 0){
 			write(new TelInfoRequest(tels));
 		}
@@ -115,6 +116,11 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 	
 	public void refresh(boolean flag,int id){
 		write(new RefreshRequest(flag,id));
+	}
+	
+	public void exportData(String fileName , String time1 , String time2 ,boolean flag){
+		ENGINE.getGameScreen().showLoading(true);
+		write(new TelInfoDown(fileName,time1,time2,flag));
 	}
 	
 	public void write(RequestEntity entity){
@@ -126,9 +132,10 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 		HttpRequest request = new HttpRequest(Net.HttpMethods.POST);
 		byte[] bytes = buffer.arrayToPosition();
 		//String url = EngineControler.plat == EngineControler.PLAT_WIN32 ? SERVICE_LOCAL_URL : SERVICE_ADDRESS_URL;
-		request.setUrl(SERVICE_ADDRESS_URL);
+		//request.setUrl(SERVICE_ADDRESS_URL);
+		request.setUrl(SERVICE_LOCAL_URL);
 		request.setContent(new ByteArrayInputStream(bytes),bytes.length);
-		if (entity instanceof TelInfoRequest){
+		if (entity instanceof TelInfoRequest || entity instanceof  TelInfoDown){
 			request.setTimeOut(30*60*1000);
 		}else{
 			request.setTimeOut(10000);
@@ -178,4 +185,5 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 		ENGINE.getGameScreen().message("用户取消");
 	}
 }
+ 
  

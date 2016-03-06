@@ -12,7 +12,6 @@ public class StartInit implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent arg0) {
 		try {
 			DataManager.getInstance().save();
-			DataManager.getInstance().stop();
 		} catch (Exception e) {
 			SystemLog.error("πÿ±’“Ï≥£",e);
 		}
@@ -29,5 +28,6 @@ public class StartInit implements ServletContextListener {
 		}
 	}  
 }
+ 
  
  

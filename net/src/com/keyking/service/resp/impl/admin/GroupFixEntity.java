@@ -21,3 +21,4 @@ public class GroupFixEntity extends RespEntity {
 	}
 }
  
+ 

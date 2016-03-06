@@ -5,10 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.keyking.service.dao.entity.GroupEntity;
 import com.keyking.service.dao.entity.TelInfoEntity;
 import com.keyking.service.dao.entity.UserEntity;
+import com.keyking.service.dao.impl.GroupDAO;
+import com.keyking.service.dao.impl.TelInfoDAO;
+import com.keyking.service.dao.impl.UserDAO;
 import com.keyking.service.util.DataBuffer;
 import com.keyking.service.util.SystemLog;
 
@@ -147,11 +153,6 @@ public class DataManager {
 		if (user == null){
 			return;
 		}
-		for (UserEntity u : users){
-			if (u.getId() == user.getId()){
-				return;
-			}
-		}
 		users.add(user);
 	}
 	
@@ -278,27 +279,20 @@ public class DataManager {
 		}
 	}
 	
+	public List<TelInfoEntity> exportTel(String start ,String end,boolean flag){
+		return dbManager.getTelInfoDao().load(start, end,flag);
+	}
+	
 	public void addTel(TelInfoEntity tel){
 		if (tel.getUserId() == 0){
 			tels.add(tel);
 		}
 	}
 	
-	boolean isRunning = true;
-	
 	public void startSave(){
-		new Thread(){
-			@Override
-			public void run() {
-				while(isRunning){
-					try {
-						Thread.sleep(1800000);
-					} catch (InterruptedException e) {
-					}
-					save();
-				}
-			}
-		}.start();
+		//30分钟刷新一次缓存。
+		ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+		service.scheduleAtFixedRate(new SaveEntity(),0,30 * 60 * 1000,TimeUnit.SECONDS);
 	}
 	
 	public void save(){
@@ -307,30 +301,22 @@ public class DataManager {
 			return;
 		}
 		SystemLog.info("服务器开始保存数据...");
+		GroupDAO gDao = dbManager.getGroupDao();
+		UserDAO uDao = dbManager.getUserDao();
+		TelInfoDAO tDao = dbManager.getTelInfoDao();
 		for (GroupEntity group : groups){
-			if (group.isChange() && dbManager.getGroupDao().save(group)){
+			if (group.isChange() && gDao.save(group)){
 				group.setChange(false);
 			}
 		}
-		Map<Long,UserEntity> temp = new HashMap<Long,UserEntity>();
-		List<UserEntity> needRemoves = new ArrayList<UserEntity>();
 		for (UserEntity user : users){
-			if (temp.get(user.getId()) == null){
-				temp.put(user.getId(),user);
-			}else{
-				needRemoves.add(user);
-				continue;
-			}
-			if (user.isChange() && dbManager.getUserDao().save(user)){
+			if (user.isChange() && uDao.save(user)){
 				user.setChange(false);
 			}
 		}
-		for (UserEntity user : needRemoves){
-			users.remove(user);
-		}
 		for (int i = 0 ; i < dels.size() ; ){
 			TelInfoEntity tel = dels.get(i);
-			if (dbManager.getTelInfoDao().save(tel)){
+			if (tDao.save(tel)){
 				dels.remove(i);
 			}else{
 				i++;
@@ -339,18 +325,20 @@ public class DataManager {
 		SystemLog.info("服务器保存数据结束...");
 	}
 	
-	public void stop(){
-		dbManager.stop();
-		isRunning = false;
-	}
-	
 	public void clear(){
 		groups.clear();
 		tels.clear();
 		dels.clear();
 		users.clear();
 	}
+	
+	class SaveEntity implements Runnable{
+		public void run() {
+			save();
+		}
+	}
 }
+ 
  
  
  

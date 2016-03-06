@@ -18,3 +18,4 @@ public class UpdateNumRequest extends RequestEntity {
 	}
 
 }
+ 

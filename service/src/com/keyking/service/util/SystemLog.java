@@ -14,7 +14,7 @@ public class SystemLog {
 	public static void start(String path){
 		int index = path.indexOf("webapps") + 8;
 		path = path.substring(0,index);
-		System.setProperty("oss.log4j.path.contact",path);
+		System.setProperty("oss.log4j.path.contact1",path);
 		PropertyConfigurator.configureAndWatch(path + "contact-service/conf/log4j.properties");
 		logger = LoggerFactory.getLogger(SystemLog.class);
 	}
@@ -38,5 +38,6 @@ public class SystemLog {
 	
 		
 }
+ 
  
  

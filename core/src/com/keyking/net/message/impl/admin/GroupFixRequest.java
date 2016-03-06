@@ -30,3 +30,4 @@ public class GroupFixRequest extends RequestEntity {
 	}
 }
  
+ 

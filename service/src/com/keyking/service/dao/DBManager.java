@@ -1,8 +1,5 @@
 package com.keyking.service.dao;
 
-import java.sql.SQLException;
-
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,7 +10,7 @@ import com.keyking.service.dao.impl.UserDAO;
 
 public class DBManager {
 	
-	ApplicationContext context = null;
+	//ApplicationContext context = null;
 	
 	UserDAO userDao = null;
 	
@@ -25,11 +22,9 @@ public class DBManager {
 		connect();
 	}
 	
-
-	
-	public void connect(){
+	private void connect(){
 		//context  = new FileSystemXmlApplicationContext(path + "conf/userDB.xml");
-		context    = new ClassPathXmlApplicationContext("userDB.xml");
+		ApplicationContext context    = new ClassPathXmlApplicationContext("userDB.xml");
 		userDao    = (UserDAO) context.getBean("userDao");
 		groupDao   = (GroupDAO)context.getBean("groupDao");
 		telInfoDao = (TelInfoDAO)context.getBean("telInfoDao");
@@ -46,20 +41,8 @@ public class DBManager {
 	public TelInfoDAO getTelInfoDao() {
 		return telInfoDao;
 	}
-
-
-
-	public void stop() {
-		BasicDataSource base = (BasicDataSource)context.getBean("CONTACT_DS");
-		if (base != null){
-			try {
-				base.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }
+ 
  
  
  

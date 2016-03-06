@@ -24,3 +24,4 @@ public class UserDelRequest extends RequestEntity {
 	}
 }
  
+ 

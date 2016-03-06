@@ -59,7 +59,11 @@ public class GroupDAO extends JdbcDaoSupport {
 			group.setId(key.getKey().intValue());
 			return true;
 		} catch (Exception e) {
+//			for (StackTraceElement trace : e.getStackTrace()){
+//				SystemLog.info(trace.getClassName() +  " : " + trace.getMethodName() +  " , " + trace.getLineNumber());
+//			}
 			SystemLog.error("SQL“Ï≥£",e);
+			//ex.printStackTrace();
 		}
 		return false;
 	}
@@ -69,6 +73,10 @@ public class GroupDAO extends JdbcDaoSupport {
 			getJdbcTemplate().update(UPDATE_SQL_STR, group.getName(),group.getFather() == null ? 0 : group.getFather().getId(),group.getTask(), group.getId());
 			return true;
 		} catch (Exception e) {
+			//e.printStackTrace();
+//			for (StackTraceElement trace : e.getStackTrace()){
+//				SystemLog.info(trace.getClassName() +  " : " + trace.getMethodName() +  " , " + trace.getLineNumber());
+//			}
 			SystemLog.error("SQL“Ï≥£",e);
 			return false;
 		}
@@ -85,12 +93,17 @@ public class GroupDAO extends JdbcDaoSupport {
 			}
 			getJdbcTemplate().update(sb.toString());
 		} catch (Exception e) {
+			//e.printStackTrace();
+//			for (StackTraceElement trace : e.getStackTrace()){
+//				SystemLog.info(trace.getClassName() +  " : " + trace.getMethodName() +  " , " + trace.getLineNumber());
+//			}
 			SystemLog.error("SQL“Ï≥£",e);
 			return false;
 		}
 		return true;
 	}
 }
+ 
  
  
  

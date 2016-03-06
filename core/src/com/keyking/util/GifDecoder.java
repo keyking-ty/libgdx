@@ -732,3 +732,4 @@ public class GifDecoder {
     }
 }
  
+ 

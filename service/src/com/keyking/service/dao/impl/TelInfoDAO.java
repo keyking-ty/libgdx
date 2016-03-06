@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.keyking.service.dao.entity.TelInfoEntity;
 import com.keyking.service.dao.row.TelInfoRow;
-import com.keyking.service.util.SystemLog;
 
 public class TelInfoDAO extends JdbcDaoSupport {
 	
@@ -38,17 +37,17 @@ public class TelInfoDAO extends JdbcDaoSupport {
 			});
 			return true;
 		} catch (Exception e) {
-			
+			//SystemLog.error("SQL异常",e);
+			return false;
 		}
-		return false;
 	}
 	
 	public boolean save(TelInfoEntity tel) {
 		try {
-			getJdbcTemplate().update(UPDATE_SQL_STR,tel.getName(),tel.getUserId(),tel.getDownTime(),tel.getTelephone());
+			getJdbcTemplate().update(UPDATE_SQL_STR, tel.getName(),tel.getUserId(),tel.getDownTime(),tel.getTelephone());
 			return true;
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			//SystemLog.error("SQL异常",e);
 		}
 		return false;
 	}
@@ -58,11 +57,29 @@ public class TelInfoDAO extends JdbcDaoSupport {
 		try {
 			tels = getJdbcTemplate().query(SELECT_SQL_STR1,telInfoRow);
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			//SystemLog.error("SQL异常",e);
+		}
+		return tels;
+	}
+	
+	public List<TelInfoEntity> load(String start,String end,boolean flag){
+		List<TelInfoEntity> tels = null;
+		String sql = "select * from teltbl where userId != 0 and downTime>=convert(varchar(10),'"  + start + "',120) and downTime <=convert(varchar(10),'" + end + "',120)";
+		try {
+			tels = getJdbcTemplate().query(sql,telInfoRow);
+		} catch (Exception e) {
+			//SystemLog.error("SQL异常",e);
+		}
+		if (flag){
+			for (TelInfoEntity tel : tels){
+				sql = "delete from teltbl where telephone='"  + tel.getTelephone() + "'";
+				getJdbcTemplate().update(sql);
+			}
 		}
 		return tels;
 	}
 }
+ 
  
  
  

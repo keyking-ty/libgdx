@@ -19,3 +19,4 @@ public interface Instances {
 	public static final MathUtil    MATH         = MathUtil.getInstance();
 }
  
+ 

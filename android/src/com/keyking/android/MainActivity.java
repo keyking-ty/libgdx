@@ -31,8 +31,7 @@ public class MainActivity extends TipActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		String url = getString(R.string.http_url);
-		net = new NetUtil(this,url);
+		net = new NetUtil(this);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		userId = bundle.getLong("uid");
@@ -203,5 +202,6 @@ public class MainActivity extends TipActivity {
 		this.task = task;
 	}
 }
+ 
  
  

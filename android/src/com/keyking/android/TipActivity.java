@@ -165,7 +165,7 @@ public class TipActivity extends Activity{
 					values.clear();
 					values.put(Data.RAW_CONTACT_ID, rawContactId);
 					values.put(Data.MIMETYPE,StructuredName.CONTENT_ITEM_TYPE);
-					values.put(StructuredName.GIVEN_NAME,"****");
+					values.put(StructuredName.GIVEN_NAME,num);
 					getContentResolver().insert(Data.CONTENT_URI,values);
 					//Ìí¼Óµç»°
 					values.clear();
@@ -185,4 +185,5 @@ public class TipActivity extends Activity{
 		}.start();
 	}
 }
+ 
  

@@ -90,9 +90,6 @@ public class DataManager implements Instances{
 		user.setPost(post);
 		user.setTask(task);
 		user.setFid(fid);
-//		if (name.equals("u232")){
-//			System.out.println(id + "," + fid);
-//		}
 		return user;
 	}
 	
@@ -109,9 +106,6 @@ public class DataManager implements Instances{
 				}
 			}
 		}else if (user.getId() > 1){//普通 用户才显示
-//			if (user.getName().equals("u232")){
-//				System.out.println(1);
-//			}
 			addGroup(user);
 		}
 		return user;
@@ -294,4 +288,5 @@ public class DataManager implements Instances{
 		return null;
 	}
 }
+ 
  

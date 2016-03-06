@@ -44,3 +44,4 @@ public class DownInfo implements Logic {
 
 }
  
+ 

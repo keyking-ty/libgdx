@@ -42,9 +42,9 @@ public class UserDAO extends JdbcDaoSupport {
 	public UserEntity login(String username, String password) {
 		UserEntity user = null;
 		try {
-			user = getJdbcTemplate().queryForObject(LOGIN_SQL_STR, userRow,username, password);
+			user = getJdbcTemplate().queryForObject(LOGIN_SQL_STR,userRow,username,password);
 		} catch (Exception e) {
-			
+			SystemLog.error("SQL“Ï≥£",e);
 		}
 		return user;
 	}
@@ -56,8 +56,7 @@ public class UserDAO extends JdbcDaoSupport {
 				@Override
 				public PreparedStatement createPreparedStatement(Connection conn)
 						throws SQLException {
-					PreparedStatement ps = conn.prepareStatement(
-							INSERT_SQL_STR, Statement.RETURN_GENERATED_KEYS);
+					PreparedStatement ps = conn.prepareStatement(INSERT_SQL_STR, Statement.RETURN_GENERATED_KEYS);
 					int cursor = 1;
 					ps.setString(cursor++, user.getUsername());
 					ps.setString(cursor++, user.getPassword());
@@ -122,6 +121,7 @@ public class UserDAO extends JdbcDaoSupport {
 		return true;
 	}
 }
+ 
  
  
  

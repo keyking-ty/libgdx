@@ -5,3 +5,4 @@ public interface AndroidLogicBody {
 	public boolean inserts(String infos);
 }
  
+ 

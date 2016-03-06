@@ -21,8 +21,7 @@
     <string name="update1">旧的密码  :</string>
     <string name="update1Null">请输入 旧的密码</string>
     <string name="update2">新的密码  :</string>
-    <string name="update2Null">请输入 新的密码</string>
+     <string name="update2Null">请输入 新的密码</string>
     <string name="update3">重复密码  :</string>
-    <string name="update3Null">请确认 新的密码</string>
-    <string name="http_url">http://36.7.67.250:9008/contact-service/logic</string>
+     <string name="update3Null">请确认 新的密码</string>
 </resources>

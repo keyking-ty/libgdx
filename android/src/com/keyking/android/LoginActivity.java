@@ -18,8 +18,7 @@ public class LoginActivity extends TipActivity{
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		String url = getString(R.string.http_url);
-		net = new NetUtil(this,url);
+		net = new NetUtil(this);
 		userEditText = (EditText)findViewById(R.id.userEditText);
 		pwdEditText = (EditText)findViewById(R.id.pwdEditText);
 		Button login = (Button)findViewById(R.id.loginButton);
@@ -46,5 +45,6 @@ public class LoginActivity extends TipActivity{
 		net.connect(new LoginRequest(username,password),loadDialog);
     }
 }
+ 
  
  
