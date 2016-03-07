@@ -21,8 +21,6 @@ import com.keyking.net.message.impl.user.UpdateNumRequest;
 
 public class MainActivity extends TipActivity {
 
-	
-
 	long userId;
 
 	int task;
@@ -31,7 +29,8 @@ public class MainActivity extends TipActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		net = new NetUtil(this);
+		String url = getString(R.string.server_url);
+		net = new NetUtil(this,url);
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		userId = bundle.getLong("uid");

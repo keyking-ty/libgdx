@@ -19,13 +19,14 @@ import com.keyking.net.message.RequestEntity;
 
 public class NetUtil implements HttpResponseListener{
 
-	public NetUtil (TipActivity activity){
+	public NetUtil (TipActivity activity,String url){
 		this.activity = activity;
+		service_address_url = url;
 	}
 	
 	private static final String READER_PACKAGE_NAME = "com.keyking.android.net.reader.";
 	
-	private final static String SERVICE_ADDRESS_URL = "http://36.7.67.250:9001/contact-service/logic";
+	String service_address_url = "http://36.7.67.250:9001/contact-service/logic";
 	
 	//private final static String SERVICE_ADDRESS_URL = "http://keyking-ty.xicp.net/contact-service/logic";
 	
@@ -44,8 +45,7 @@ public class NetUtil implements HttpResponseListener{
 		entity.serialize(buffer);
 		HttpRequest request = new HttpRequest(Net.HttpMethods.POST);
 		byte[] bytes = buffer.arrayToPosition();
-		String url = SERVICE_ADDRESS_URL;
-		request.setUrl(url);
+		request.setUrl(service_address_url);
 		request.setContent(new ByteArrayInputStream(bytes),bytes.length);
 		request.setTimeOut(10000);
 		net.sendHttpRequest(request,this);

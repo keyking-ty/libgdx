@@ -18,7 +18,8 @@ public class LoginActivity extends TipActivity{
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		net = new NetUtil(this);
+		String url = getString(R.string.server_url);
+		net = new NetUtil(this,url);
 		userEditText = (EditText)findViewById(R.id.userEditText);
 		pwdEditText = (EditText)findViewById(R.id.pwdEditText);
 		Button login = (Button)findViewById(R.id.loginButton);

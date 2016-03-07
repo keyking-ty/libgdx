@@ -70,6 +70,7 @@ public final class R {
         public static final int loginStr=0x7f040001;
         public static final int pwdNull=0x7f040005;
         public static final int pwdStr=0x7f040004;
+        public static final int server_url=0x7f040018;
         public static final int update1=0x7f040012;
         public static final int update1Null=0x7f040013;
         public static final int update2=0x7f040014;
