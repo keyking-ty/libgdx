@@ -53,6 +53,7 @@ public class EngineControler extends Game implements Instances{
 		setState(new StartScreen());
 		registEventListener(exit,Event.EVT_EXIT_CODE);
 		registEventListener(next,Event.EVT_NEXT_ACTION);
+		NET.init();
 	}
 
 	public void setState(GameScreen game) {

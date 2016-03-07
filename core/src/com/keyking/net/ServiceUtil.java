@@ -2,8 +2,12 @@ package com.keyking.net;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
@@ -31,12 +35,13 @@ import com.keyking.net.message.impl.user.DownInfoRequest;
 import com.keyking.net.reader.Reader;
 import com.keyking.util.DataOperateUtil;
 import com.keyking.util.Instances;
+import com.keyking.util.XmlUtils;
 
 public class ServiceUtil implements Instances , HttpResponseListener{
 
 	private static ServiceUtil instance = new ServiceUtil();
 	
-	protected final static String SERVICE_ADDRESS_URL = "http://36.7.67.250:9001/contact-service/logic";
+	protected static String SERVICE_ADDRESS_URL = "http://36.7.67.250:9001/contact-service/logic";
 	
 	//private final static String SERVICE_ADDRESS_URL = "http://keyking-ty.xicp.net/contact-service/logic";
 	
@@ -50,8 +55,15 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 		return instance;
 	}
 	
-	public ServiceUtil init(){
-		return this;
+	public void init(){
+		File file = new File("connect.xml");
+		try {
+			Document document = XmlUtils.load(file);
+			Element element   = document.getDocumentElement();
+			SERVICE_ADDRESS_URL = XmlUtils.getAttribute(element,"url");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void login(String username,String passward){
@@ -132,8 +144,8 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 		HttpRequest request = new HttpRequest(Net.HttpMethods.POST);
 		byte[] bytes = buffer.arrayToPosition();
 		//String url = EngineControler.plat == EngineControler.PLAT_WIN32 ? SERVICE_LOCAL_URL : SERVICE_ADDRESS_URL;
-		//request.setUrl(SERVICE_ADDRESS_URL);
-		request.setUrl(SERVICE_LOCAL_URL);
+		request.setUrl(SERVICE_ADDRESS_URL);
+		//request.setUrl(SERVICE_LOCAL_URL);
 		request.setContent(new ByteArrayInputStream(bytes),bytes.length);
 		if (entity instanceof TelInfoRequest || entity instanceof  TelInfoDown){
 			request.setTimeOut(30*60*1000);
