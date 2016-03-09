@@ -130,9 +130,9 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 		write(new RefreshRequest(flag,id));
 	}
 	
-	public void exportData(String fileName , String time1 , String time2 ,boolean flag){
+	public void exportData(int type,String fileName , String time1 , String time2 ,boolean flag){
 		ENGINE.getGameScreen().showLoading(true);
-		write(new TelInfoDown(fileName,time1,time2,flag));
+		write(new TelInfoDown(type,fileName,time1,time2,flag));
 	}
 	
 	public void write(RequestEntity entity){
@@ -144,8 +144,8 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 		HttpRequest request = new HttpRequest(Net.HttpMethods.POST);
 		byte[] bytes = buffer.arrayToPosition();
 		//String url = EngineControler.plat == EngineControler.PLAT_WIN32 ? SERVICE_LOCAL_URL : SERVICE_ADDRESS_URL;
-		request.setUrl(SERVICE_ADDRESS_URL);
-		//request.setUrl(SERVICE_LOCAL_URL);
+		//request.setUrl(SERVICE_ADDRESS_URL);
+		request.setUrl(SERVICE_LOCAL_URL);
 		request.setContent(new ByteArrayInputStream(bytes),bytes.length);
 		if (entity instanceof TelInfoRequest || entity instanceof  TelInfoDown){
 			request.setTimeOut(30*60*1000);

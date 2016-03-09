@@ -279,8 +279,8 @@ public class DataManager {
 		}
 	}
 	
-	public List<TelInfoEntity> exportTel(String start ,String end,boolean flag){
-		return dbManager.getTelInfoDao().load(start, end,flag);
+	public List<TelInfoEntity> exportTel(int downType , String start ,String end,boolean flag){
+		return dbManager.getTelInfoDao().load(downType,start, end,flag);
 	}
 	
 	public void addTel(TelInfoEntity tel){

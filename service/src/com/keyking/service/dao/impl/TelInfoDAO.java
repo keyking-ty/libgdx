@@ -62,9 +62,10 @@ public class TelInfoDAO extends JdbcDaoSupport {
 		return tels;
 	}
 	
-	public List<TelInfoEntity> load(String start,String end,boolean flag){
+	public List<TelInfoEntity> load(int dwonType, String start,String end,boolean flag){
 		List<TelInfoEntity> tels = null;
-		String sql = "select * from teltbl where userId != 0 and downTime>=convert(varchar(10),'"  + start + "',120) and downTime <=convert(varchar(10),'" + end + "',120)";
+		String downSTr = dwonType == 1 ? ">0" : "=0";
+		String sql = "select * from teltbl where userId " + downSTr + " and downTime>='"  + start + "' and downTime <'" + end + "'";
 		try {
 			tels = getJdbcTemplate().query(sql,telInfoRow);
 		} catch (Exception e) {

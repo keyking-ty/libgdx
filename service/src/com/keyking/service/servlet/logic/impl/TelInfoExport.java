@@ -15,11 +15,12 @@ public class TelInfoExport extends Logic {
 	public RespEntity doLogic(DataBuffer buffer, String logicName)
 			throws Exception {
 		TelInfoExportEntity resp = new TelInfoExportEntity(logicName);
+		int downType = buffer.getInt();
 		byte type = buffer.get();
 		String fileName = buffer.getPrefixedString();
 		String start = buffer.getPrefixedString();
 		String end   = buffer.getPrefixedString();
-		List<TelInfoEntity> tels = DataManager.getInstance().exportTel(start,end,type == 1);
+		List<TelInfoEntity> tels = DataManager.getInstance().exportTel(downType,start,end,type == 1);
 		resp.setFileName(fileName);
 		resp.setTels(tels);
 		resp.setResult(RespEntity.RESP_RESULT_SUCC);

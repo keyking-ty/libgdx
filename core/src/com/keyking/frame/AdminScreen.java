@@ -410,9 +410,15 @@ public class AdminScreen extends GameScreen {
 		Label label = UI.createLabel("数据导出","red");
 		showWindow.add(label).center().row();
 		Table table = new Table(skin);
+		table.add("类 型:","default-font","white").left().pad(10);
+		SelectBox<String> select = new SelectBox<String>(skin);
+		String[] names = new String[]{"已下载","未下载"};
+		select.setItems(names);
+		select.setName("1");
+		table.add(select).left().row();
 		table.add("导出目录:");
 		TextField name = UI.createTextField(300,30);
-		name.setName("1");
+		name.setName("2");
 		table.add(name).left();
 		TextButton open = UI.createTextButton("浏览");
 		table.add(open).left().row();
@@ -433,15 +439,15 @@ public class AdminScreen extends GameScreen {
 
 		table.add("开始日期:");
 		TextField time = UI.createTextField(300,30);
-		time.setName("2");
+		time.setName("3");
 		table.add(time).left().row();
 		table.add("结束日期:");
 		time = UI.createTextField(300,30);
-		time.setName("3");
+		time.setName("4");
 		table.add(time).left().row();
 		
 		final CheckBox check = new CheckBox("删除数据",skin,"warning");
-		check.setName("4");
+		check.setName("5");
 		check.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent inputevent, float f, float f1) {
@@ -483,26 +489,28 @@ public class AdminScreen extends GameScreen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Table table = (Table)event.getListenerActor().getUserObject();
-				TextField field = searchFromTable(table,1);
+				SelectBox<String> select = searchFromTable(table,1);
+				int type = select.getSelected().equals("已下载") ? 1 : 0;
+				TextField field = searchFromTable(table,2);
 				String name = field.getText();
 				if (name == null || name.equals("")){
 					message("请选择导出文件");
 					return;
 				}
-				field = searchFromTable(table,2);
+				field = searchFromTable(table,3);
 				String time1 = field.getText();
 				if (time1 == null || time1.equals("")){
 					message("请输入开始日期(格式:2016-05-06)");
 					return;
 				}
-				field = searchFromTable(table,3);
+				field = searchFromTable(table,4);
 				String time2 = field.getText();
 				if (time2 == null || time2.equals("")){
 					message("请输入结束日期(格式:2016-05-07)");
 					return;
 				}
-				CheckBox check = searchFromTable(table,4);
-				NET.exportData(name,time1,time2,check.isChecked());
+				CheckBox check = searchFromTable(table,5);
+				NET.exportData(type,name,time1,time2,check.isChecked());
 			}
 		});
 		showWindow.addActor(sure);
