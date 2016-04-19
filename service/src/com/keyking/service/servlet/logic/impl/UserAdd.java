@@ -13,8 +13,8 @@ public class UserAdd extends Logic {
 	@Override
 	public RespEntity doLogic(DataBuffer buffer,String logicName)throws Exception {
 		UserAddEntity entity = new UserAddEntity(logicName);
-		String name = buffer.getPrefixedString();
-		int fatherId = buffer.getInt();
+		String name     = buffer.getPrefixedString();
+		int fatherId    = buffer.getInt();
 		UserEntity user = new UserEntity();
 		user.setUsername(name);
 		GroupEntity father = DataManager.getInstance().searchGroup(fatherId);

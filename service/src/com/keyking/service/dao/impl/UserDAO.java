@@ -34,7 +34,7 @@ public class UserDAO extends JdbcDaoSupport {
 		try {
 			users = getJdbcTemplate().query(LOAD_SQL_STR,userRow);
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("load users error : " + e.getMessage());
 		}
 		return users;
 	}
@@ -44,7 +44,7 @@ public class UserDAO extends JdbcDaoSupport {
 		try {
 			user = getJdbcTemplate().queryForObject(LOGIN_SQL_STR,userRow,username,password);
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("not find user");
 		}
 		return user;
 	}
@@ -74,7 +74,7 @@ public class UserDAO extends JdbcDaoSupport {
 			}, key);
 			return user.setId(key.getKey().longValue());
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("insert user error : " + e.getMessage());
 		}
 		return 0;
 	}
@@ -88,7 +88,7 @@ public class UserDAO extends JdbcDaoSupport {
 					user.getTask(), user.getId());
 			return true;
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("save user error : " + e.getMessage());
 			return false;
 		}
 	}
@@ -98,7 +98,7 @@ public class UserDAO extends JdbcDaoSupport {
 		try {
 			user = getJdbcTemplate().queryForObject(CJECK_SQL_STR, userRow,username);
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			//SystemLog.error("SQL异常",e);
 			return false;
 		}
 		return user != null;
@@ -115,7 +115,7 @@ public class UserDAO extends JdbcDaoSupport {
 			}
 			getJdbcTemplate().update(sb.toString());
 		} catch (Exception e) {
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("del users error : " + e.getMessage());
 			return false;
 		}
 		return true;

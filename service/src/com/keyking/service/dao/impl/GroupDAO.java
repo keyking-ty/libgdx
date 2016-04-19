@@ -30,11 +30,7 @@ public class GroupDAO extends JdbcDaoSupport {
 		try {
 			groups = getJdbcTemplate().query(LOAD_SQL_STR, groupRow);
 		} catch (Exception e) {
-			//e.printStackTrace();
-//			for (StackTraceElement trace : e.getStackTrace()){
-//				SystemLog.info(trace.getClassName() +  " : " + trace.getMethodName() +  " , " + trace.getLineNumber());
-//			}
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("load group error" + e.getMessage());
 		}
 		return groups;
 	}
@@ -50,8 +46,7 @@ public class GroupDAO extends JdbcDaoSupport {
 							INSERT_SQL_STR, Statement.RETURN_GENERATED_KEYS);
 					int cursor = 1;
 					ps.setString(cursor++, group.getName());
-					ps.setInt(cursor++, group.getFather() == null ? 0 : group
-							.getFather().getId());
+					ps.setInt(cursor++, group.getFather() == null ? 0 : group.getFather().getId());
 					ps.setInt(cursor++, group.getTask());
 					return ps;
 				}
@@ -59,11 +54,7 @@ public class GroupDAO extends JdbcDaoSupport {
 			group.setId(key.getKey().intValue());
 			return true;
 		} catch (Exception e) {
-//			for (StackTraceElement trace : e.getStackTrace()){
-//				SystemLog.info(trace.getClassName() +  " : " + trace.getMethodName() +  " , " + trace.getLineNumber());
-//			}
-			SystemLog.error("SQL异常",e);
-			//ex.printStackTrace();
+			SystemLog.error("insert group error" + e.getMessage());
 		}
 		return false;
 	}
@@ -73,11 +64,7 @@ public class GroupDAO extends JdbcDaoSupport {
 			getJdbcTemplate().update(UPDATE_SQL_STR, group.getName(),group.getFather() == null ? 0 : group.getFather().getId(),group.getTask(), group.getId());
 			return true;
 		} catch (Exception e) {
-			//e.printStackTrace();
-//			for (StackTraceElement trace : e.getStackTrace()){
-//				SystemLog.info(trace.getClassName() +  " : " + trace.getMethodName() +  " , " + trace.getLineNumber());
-//			}
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("save group error" + e.getMessage());
 			return false;
 		}
 	}
@@ -93,11 +80,7 @@ public class GroupDAO extends JdbcDaoSupport {
 			}
 			getJdbcTemplate().update(sb.toString());
 		} catch (Exception e) {
-			//e.printStackTrace();
-//			for (StackTraceElement trace : e.getStackTrace()){
-//				SystemLog.info(trace.getClassName() +  " : " + trace.getMethodName() +  " , " + trace.getLineNumber());
-//			}
-			SystemLog.error("SQL异常",e);
+			SystemLog.error("del group error" + e.getMessage());
 			return false;
 		}
 		return true;

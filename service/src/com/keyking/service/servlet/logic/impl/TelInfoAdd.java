@@ -8,16 +8,16 @@ import com.keyking.service.servlet.resp.impl.admin.JustOkEntity;
 import com.keyking.service.util.DataBuffer;
 
 public class TelInfoAdd extends Logic{
-
+	
 	@Override
 	public RespEntity doLogic(DataBuffer buffer, String logicName)throws Exception {
 		JustOkEntity entity = new JustOkEntity(logicName);
 		int len = buffer.getInt();
 		final TelInfoEntity[] tels = new TelInfoEntity[len];
 		for (int i = 0 ; i < len ; i ++){
-			long userId  = buffer.getLong();
+			long userId = buffer.getLong();
 			String name = buffer.getPrefixedString();
-			String telephone = buffer.getPrefixedString();
+			String telephone  = buffer.getPrefixedString();
 			TelInfoEntity tel = new TelInfoEntity();
 			tel.setName(name);
 			tel.setTelephone(telephone);

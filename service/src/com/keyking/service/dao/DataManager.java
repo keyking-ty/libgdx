@@ -2,6 +2,7 @@ package com.keyking.service.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -18,7 +19,7 @@ import com.keyking.service.dao.impl.UserDAO;
 import com.keyking.service.util.DataBuffer;
 import com.keyking.service.util.SystemLog;
 
-public class DataManager {
+public class DataManager implements Runnable{
 	
 	List<UserEntity> users = new ArrayList<UserEntity>();
 	
@@ -85,7 +86,7 @@ public class DataManager {
 		SystemLog.info("加载客户数据");
 		List<TelInfoEntity> tels = dbManager.getTelInfoDao().load();
 		if (tels != null && tels.size() > 0){
-			this.tels = tels;
+			this.tels.addAll(tels);
 		}
 	}
 	
@@ -258,25 +259,23 @@ public class DataManager {
 	}
 	
 
-	public List<TelInfoEntity> loadNotUserTel(Object locker,int num){
-		synchronized (locker) {
-			List<TelInfoEntity> result = new ArrayList<TelInfoEntity>();
-			if (tels.size() == 0){
-				return result;
-			}
-			Random random = new Random();
-			while (num > 0 && tels.size() > 0){
-				int index = random.nextInt(tels.size());
-				TelInfoEntity tel = tels.get(index);
-				tels.remove(index);
-				dels.add(tel);
-				if (tel.getUserId() == 0){
-					result.add(tel);
-					num--;
-				}
-			}
+	public List<TelInfoEntity> loadNotUserTel(int num){
+		List<TelInfoEntity> result = new ArrayList<TelInfoEntity>();
+		if (tels.size() == 0){
 			return result;
 		}
+		Random random = new Random();
+		while (num > 0 && tels.size() > 0){
+			int index = random.nextInt(tels.size());
+			TelInfoEntity tel = tels.get(index);
+			tels.remove(index);
+			dels.add(tel);
+			if (tel.getUserId() == 0){
+				result.add(tel);
+				num--;
+			}
+		}
+		return result;
 	}
 	
 	public List<TelInfoEntity> exportTel(int downType , String start ,String end,boolean flag){
@@ -290,9 +289,8 @@ public class DataManager {
 	}
 	
 	public void startSave(){
-		//30分钟刷新一次缓存。
 		ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-		service.scheduleAtFixedRate(new SaveEntity(),0,30 * 60 * 1000,TimeUnit.SECONDS);
+		service.scheduleAtFixedRate(this,0,15*60*1000,TimeUnit.SECONDS);
 	}
 	
 	public void save(){
@@ -314,12 +312,11 @@ public class DataManager {
 				user.setChange(false);
 			}
 		}
-		for (int i = 0 ; i < dels.size() ; ){
-			TelInfoEntity tel = dels.get(i);
+		Iterator<TelInfoEntity> iter = dels.iterator();
+		while (iter.hasNext()){
+			TelInfoEntity  tel = iter.next();
 			if (tDao.save(tel)){
-				dels.remove(i);
-			}else{
-				i++;
+				iter.remove();
 			}
 		}
 		SystemLog.info("服务器保存数据结束...");
@@ -331,11 +328,10 @@ public class DataManager {
 		dels.clear();
 		users.clear();
 	}
-	
-	class SaveEntity implements Runnable{
-		public void run() {
-			save();
-		}
+
+	@Override
+	public void run() {
+		save();
 	}
 }
  

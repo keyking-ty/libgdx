@@ -25,7 +25,7 @@ public class GroupReset extends Logic {
 					int pre = user.getTask();
 					user.reset();
 					user.setChange(true);
-					SystemLog.info(user.getUsername() + "的任务数量由:" + pre + "变为:" + user.getTask());
+					SystemLog.info(user.getUsername() + " 的任务数量由:" + pre + "变为:" + user.getTask());
 				}
 			}
 		}

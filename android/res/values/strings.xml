@@ -24,5 +24,5 @@
      <string name="update2Null">请输入新的密码</string>
     <string name="update3">重复密码  :</string>
      <string name="update3Null">请确认新的密码</string>
-     <string name="server_url">http://36.7.67.250:9106/contact-service/logic</string>
+     <string name="server_url">http://36.7.67.250:9001/contact-service/logic</string>
 </resources>

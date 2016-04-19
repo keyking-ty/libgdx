@@ -11,12 +11,13 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import com.keyking.service.dao.entity.TelInfoEntity;
 import com.keyking.service.dao.row.TelInfoRow;
+import com.keyking.service.util.SystemLog;
 
 public class TelInfoDAO extends JdbcDaoSupport {
 	
 	private static String INSERT_SQL_STR = "insert into teltbl (name,telephone,userId)values(?,?,?)";
 	
-	private static String UPDATE_SQL_STR = "update teltbl set name=?,userId=?,downTime=? where telephone=?";
+	private static String UPDATE_SQL_STR = "update teltbl set userId=?,downTime=? where telephone=?";
 	
 	private static String SELECT_SQL_STR1 = "select * from teltbl where userId=0";
 	
@@ -37,17 +38,17 @@ public class TelInfoDAO extends JdbcDaoSupport {
 			});
 			return true;
 		} catch (Exception e) {
-			//SystemLog.error("SQL“Ï≥£",e);
+			SystemLog.error("insert tel error : " + e.getMessage());
 			return false;
 		}
 	}
 	
 	public boolean save(TelInfoEntity tel) {
 		try {
-			getJdbcTemplate().update(UPDATE_SQL_STR, tel.getName(),tel.getUserId(),tel.getDownTime(),tel.getTelephone());
+			getJdbcTemplate().update(UPDATE_SQL_STR,tel.getUserId(),tel.getDownTime(),tel.getTelephone());
 			return true;
 		} catch (Exception e) {
-			//SystemLog.error("SQL“Ï≥£",e);
+			SystemLog.error("save tel error : " + e.getMessage());
 		}
 		return false;
 	}
@@ -57,7 +58,7 @@ public class TelInfoDAO extends JdbcDaoSupport {
 		try {
 			tels = getJdbcTemplate().query(SELECT_SQL_STR1,telInfoRow);
 		} catch (Exception e) {
-			//SystemLog.error("SQL“Ï≥£",e);
+			SystemLog.error("load tels error : " + e.getMessage());
 		}
 		return tels;
 	}
