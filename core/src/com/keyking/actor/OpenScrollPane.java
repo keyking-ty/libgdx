@@ -67,6 +67,9 @@ public class OpenScrollPane extends ScrollPane implements Instances{
 					actor = UI.createTextButton(node.getName(),"check");
 					actor.addListener(new FatherClick());
 				}else{
+					if (node.getFather() != null){
+						continue;
+					}
 					if (node instanceof TelInfo){
 						TelInfo tel = (TelInfo)node;
 						actor = UI.createLabel(tel.getName() + "(" + tel.getTelephone() + ")","white");

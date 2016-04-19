@@ -23,7 +23,8 @@ public class UserRow implements RowMapper<UserEntity>{
 		user.setAddress(rs.getString("address"));
 		user.setAge(rs.getInt("age"));
 		user.setPost(rs.getString("post"));
-		user.setFid(rs.getInt("father"));
+		int fid = rs.getInt("father");
+		user.setFid(fid);
 		user.setTask(rs.getInt("task"));
 		return user;
 	}

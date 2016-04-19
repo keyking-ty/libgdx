@@ -68,14 +68,14 @@ public class DataManager implements Runnable{
 	
 	public void load(){
 		SystemLog.info("加载用户数据");
-		List<UserEntity> users = dbManager.getUserDao().load();
-		if (users != null){
-			this.users = users;
+		users = dbManager.getUserDao().load();
+		if (users == null){
+			users = new ArrayList<UserEntity>();
 		}
 		SystemLog.info("加载部门数据");
-		List<GroupEntity> groups = dbManager.getGroupDao().load();
-		if (groups != null && groups.size() > 0){
-			this.groups = groups;
+		groups = dbManager.getGroupDao().load();
+		if (groups == null){
+			groups = new ArrayList<GroupEntity>();
 		}
 		for (UserEntity user : users){
 			user.init(this);
@@ -84,9 +84,9 @@ public class DataManager implements Runnable{
 			group.init(this);
 		}
 		SystemLog.info("加载客户数据");
-		List<TelInfoEntity> tels = dbManager.getTelInfoDao().load();
-		if (tels != null && tels.size() > 0){
-			this.tels.addAll(tels);
+		tels = dbManager.getTelInfoDao().load();
+		if (tels == null){
+			tels = new ArrayList<TelInfoEntity>();
 		}
 	}
 	
