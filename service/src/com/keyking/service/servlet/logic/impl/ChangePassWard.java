@@ -21,7 +21,7 @@ public class ChangePassWard extends Logic {
 			if (user.getPassword().equals(old)){
 				entity.setResult(RespEntity.RESP_RESULT_SUCC);
 				user.setPassword(newpassward);
-				user.setChange(true);
+				DataManager.getInstance().save(user);
 			}else{
 				entity.setError("¾ÉÃÜÂë´íÎó");
 			}

@@ -43,7 +43,7 @@ public class UserFix extends Logic {
 		user.setAddress(address);
 		user.setEmail(email);
 		user.setPost(post);
-		user.setChange(true);
+		DataManager.getInstance().save(user);
 		entity.setResult(RespEntity.RESP_RESULT_SUCC);
 		return entity;
 	}

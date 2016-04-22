@@ -38,10 +38,11 @@ public class DownInfo extends Logic {
 						for (TelInfoEntity tel : tels){
 							tel.setUserId(uid);
 							tel.setDownTime(date);
+							DataManager.getInstance().save(tel);
 						}
 						int task = user.getTask() - tels.size();
 						user.setTask(task);
-						user.setChange(true);
+						DataManager.getInstance().save(user);
 						entity.setTels(tels);
 					}else{
 						entity.setError("后台数据已用完");

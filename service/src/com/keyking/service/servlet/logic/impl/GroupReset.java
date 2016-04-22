@@ -16,19 +16,22 @@ public class GroupReset extends Logic {
 	public RespEntity doLogic(final DataBuffer buffer, final String logicName)
 			throws Exception {
 		GroupResetEntity entity = new GroupResetEntity(logicName);
-		int len = buffer.getInt();
-		if (len > 0){
-			for (int i = 0 ; i < len ; i++){
-				int id  = buffer.getInt();
-				List<UserEntity> users = DataManager.getInstance().searchUsers(id);
-				for (UserEntity user : users){
-					int pre = user.getTask();
-					user.reset();
-					user.setChange(true);
-					SystemLog.info(user.getUsername() + " 的任务数量由:" + pre + "变为:" + user.getTask());
+		new Thread(){
+			@Override
+			public void run() {
+				int len = buffer.getInt();
+				for (int i = 0 ; i < len ; i++){
+					int id  = buffer.getInt();
+					List<UserEntity> users = DataManager.getInstance().searchUsers(id);
+					for (UserEntity user : users){
+						int pre = user.getTask();
+						user.reset();
+						DataManager.getInstance().save(user);
+						SystemLog.info(user.getUsername() + " 的任务数量由:" + pre + "变为:" + user.getTask());
+					}
 				}
 			}
-		}
+		}.start();
 		entity.setResult(RespEntity.RESP_RESULT_SUCC);
 		return entity;
 	}

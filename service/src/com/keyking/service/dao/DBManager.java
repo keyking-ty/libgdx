@@ -18,13 +18,8 @@ public class DBManager {
 	
 	TelInfoDAO telInfoDao = null;
 	
-	public DBManager() {
-		connect();
-	}
-	
-	private void connect(){
-		//context  = new FileSystemXmlApplicationContext(path + "conf/userDB.xml");
-		ApplicationContext context    = new ClassPathXmlApplicationContext("userDB.xml");
+	public void connect(String fileName){
+		ApplicationContext context    = new ClassPathXmlApplicationContext(fileName);
 		userDao    = (UserDAO) context.getBean("userDao");
 		groupDao   = (GroupDAO)context.getBean("groupDao");
 		telInfoDao = (TelInfoDAO)context.getBean("telInfoDao");

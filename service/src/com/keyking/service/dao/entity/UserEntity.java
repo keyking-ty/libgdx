@@ -34,8 +34,6 @@ public class UserEntity {
 	
 	String ip;
 	
-	boolean isChange = false;
-	
 	public long getId() {
 		return id;
 	}
@@ -147,14 +145,6 @@ public class UserEntity {
 
 	public void init(DataManager dataManager) {
 		father = dataManager.searchGroup(fid);
-	}
-
-	public boolean isChange() {
-		return isChange;
-	}
-
-	public void setChange(boolean isChange) {
-		this.isChange = isChange;
 	}
 
 	public void _serialize(DataBuffer buffer) {

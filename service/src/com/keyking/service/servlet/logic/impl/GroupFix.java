@@ -22,15 +22,10 @@ public class GroupFix extends Logic {
 			fix.setError("找不到要修改的部门");
 			return fix;
 		}
-		if (group.getFather() != null && group.getFather().getId() == fatherId){//父亲没有变
-			group.setName(name);
-			group.setTask(task);
-		}else{
-			group.setFather(father);
-			group.setName(name);
-			group.setTask(task);
-		}
-		group.setChange(true);
+		group.setFather(father);
+		group.setName(name);
+		group.setTask(task);
+		DataManager.getInstance().save(group);
 		fix.setGroup(group);
 		fix.setResult(RespEntity.RESP_RESULT_SUCC);
 		return fix;

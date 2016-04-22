@@ -16,8 +16,6 @@ public class GroupEntity {
 	
 	int task = 50;
 	
-	boolean isChange = false;
-	
 	public int getId() {
 		return id;
 	}
@@ -56,14 +54,6 @@ public class GroupEntity {
 
 	public void setTask(int task) {
 		this.task = task;
-	}
-
-	public boolean isChange() {
-		return isChange;
-	}
-
-	public void setChange(boolean isChange) {
-		this.isChange = isChange;
 	}
 
 	public void _serialize(DataBuffer buffer) {

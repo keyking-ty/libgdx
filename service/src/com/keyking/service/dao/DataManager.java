@@ -2,24 +2,17 @@ package com.keyking.service.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import com.keyking.service.dao.entity.GroupEntity;
 import com.keyking.service.dao.entity.TelInfoEntity;
 import com.keyking.service.dao.entity.UserEntity;
-import com.keyking.service.dao.impl.GroupDAO;
-import com.keyking.service.dao.impl.TelInfoDAO;
-import com.keyking.service.dao.impl.UserDAO;
 import com.keyking.service.util.DataBuffer;
 import com.keyking.service.util.SystemLog;
 
-public class DataManager implements Runnable{
+public class DataManager {
 	
 	List<UserEntity> users = new ArrayList<UserEntity>();
 	
@@ -29,8 +22,6 @@ public class DataManager implements Runnable{
 	
 	List<TelInfoEntity> tels = new ArrayList<TelInfoEntity>();
 	
-	List<TelInfoEntity> dels = new ArrayList<TelInfoEntity>();
-	
 	boolean isFirst = true;
 	
 	private static DataManager instance = new DataManager();
@@ -39,12 +30,12 @@ public class DataManager implements Runnable{
 		return instance;
 	}
 	
-	public void init(){
+	public void init(String key){
 		isFirst = true;
 		dbManager = new DBManager();
+		dbManager.connect("userDB_" + key + ".xml");
 		clear();
 		load();
-		startSave();
 	}
 	
 	public List<UserEntity> getUsers() {
@@ -203,7 +194,7 @@ public class DataManager implements Runnable{
 	
 	public boolean delGroup(GroupEntity... entitys){
 		if (dbManager.getGroupDao().Del(entitys)){
-			Map<GroupEntity,List<GroupEntity>> fatherandsun = new HashMap<GroupEntity,List<GroupEntity>>();
+			Map<GroupEntity,List<GroupEntity>> fatherAndSuns = new HashMap<GroupEntity,List<GroupEntity>>();
 			List<UserEntity> temps = new ArrayList<UserEntity>();
 			for (GroupEntity group : entitys){
 				for (UserEntity user : users){
@@ -214,17 +205,17 @@ public class DataManager implements Runnable{
 				}
 				GroupEntity father = group.getFather();
 				if (father != null){
-					List<GroupEntity> suns = fatherandsun.get(father);
+					List<GroupEntity> suns = fatherAndSuns.get(father);
 					if (suns == null){
 						suns = new ArrayList<GroupEntity>();
-						fatherandsun.put(father,suns);
+						fatherAndSuns.put(father,suns);
 					}
 					suns.add(group);
 				}
 			}
-			for (GroupEntity group : fatherandsun.keySet()){
+			for (GroupEntity group : fatherAndSuns.keySet()){
 				GroupEntity father = findNotDel(group,entitys);
-				List<GroupEntity> suns = fatherandsun.get(group);
+				List<GroupEntity> suns = fatherAndSuns.get(group);
 				for (GroupEntity sun : suns){
 					sun.setFather(father);
 				}
@@ -269,7 +260,6 @@ public class DataManager implements Runnable{
 			int index = random.nextInt(tels.size());
 			TelInfoEntity tel = tels.get(index);
 			tels.remove(index);
-			dels.add(tel);
 			if (tel.getUserId() == 0){
 				result.add(tel);
 				num--;
@@ -288,50 +278,23 @@ public class DataManager implements Runnable{
 		}
 	}
 	
-	public void startSave(){
-		ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-		service.scheduleAtFixedRate(this,0,15*60*1000,TimeUnit.SECONDS);
-	}
-	
-	public void save(){
-		if (isFirst){
-			isFirst = false;
-			return;
-		}
-		SystemLog.info("服务器开始保存数据...");
-		GroupDAO gDao = dbManager.getGroupDao();
-		UserDAO uDao = dbManager.getUserDao();
-		TelInfoDAO tDao = dbManager.getTelInfoDao();
-		for (GroupEntity group : groups){
-			if (group.isChange() && gDao.save(group)){
-				group.setChange(false);
-			}
-		}
-		for (UserEntity user : users){
-			if (user.isChange() && uDao.save(user)){
-				user.setChange(false);
-			}
-		}
-		Iterator<TelInfoEntity> iter = dels.iterator();
-		while (iter.hasNext()){
-			TelInfoEntity  tel = iter.next();
-			if (tDao.save(tel)){
-				iter.remove();
-			}
-		}
-		SystemLog.info("服务器保存数据结束...");
-	}
 	
 	public void clear(){
 		groups.clear();
 		tels.clear();
-		dels.clear();
 		users.clear();
 	}
-
-	@Override
-	public void run() {
-		save();
+	
+	public void save(UserEntity user){
+		dbManager.getUserDao().save(user);
+	}
+	
+	public void save(GroupEntity group){
+		dbManager.getGroupDao().save(group);
+	}
+	
+	public void save(TelInfoEntity tel){
+		dbManager.getTelInfoDao().save(tel);
 	}
 }
  

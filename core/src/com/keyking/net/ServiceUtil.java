@@ -144,8 +144,8 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 		HttpRequest request = new HttpRequest(Net.HttpMethods.POST);
 		byte[] bytes = buffer.arrayToPosition();
 		//String url = EngineControler.plat == EngineControler.PLAT_WIN32 ? SERVICE_LOCAL_URL : SERVICE_ADDRESS_URL;
-		request.setUrl(SERVICE_ADDRESS_URL);
-		//request.setUrl(SERVICE_LOCAL_URL);
+		//request.setUrl(SERVICE_ADDRESS_URL);
+		request.setUrl(SERVICE_LOCAL_URL);
 		request.setContent(new ByteArrayInputStream(bytes),bytes.length);
 		if (entity instanceof TelInfoRequest || entity instanceof  TelInfoDown){
 			request.setTimeOut(30*60*1000);

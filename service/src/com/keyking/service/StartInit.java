@@ -11,7 +11,7 @@ public class StartInit implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 		try {
-			DataManager.getInstance().save();
+			DataManager.getInstance().clear();
 		} catch (Exception e) {
 			SystemLog.error("关闭异常",e);
 		}
@@ -22,7 +22,6 @@ public class StartInit implements ServletContextListener {
 		try {
 			String path = arg0.getServletContext().getRealPath("");
 			SystemLog.start(path);
-			DataManager.getInstance().init();
 		} catch (Exception e) {
 			SystemLog.error("启动一次",e);
 		}

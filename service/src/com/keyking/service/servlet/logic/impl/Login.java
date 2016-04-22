@@ -16,7 +16,6 @@ public class Login extends Logic {
 		String password = buffer.getPrefixedString();
 		LoginEntity resp = new LoginEntity(logicName);
 		UserEntity entity = DataManager.getInstance().login(username,password);
-		//SystemLog.info(username + "," + password + "ÕýÔÚµÇÂ¼");
 		if (entity != null){
 			entity.setIp(getIp());
 			resp.setUer(entity);
