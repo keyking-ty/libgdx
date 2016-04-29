@@ -106,8 +106,11 @@ public class DataManager {
 	 */
 	public UserEntity login(String username , String password){
 		for (UserEntity user : users){
-			if (user.getUsername().equals(username) && user.getPassword().equals(password)){
-				return user;
+			if (user.getUsername().equals(username)){
+				if (user.getPassword().equals(password)){
+					return user;
+				}
+				return null;
 			}
 		}
 		UserEntity user = dbManager.getUserDao().login(username,password);
