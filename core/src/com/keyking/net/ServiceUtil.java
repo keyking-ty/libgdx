@@ -41,15 +41,14 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 
 	private static ServiceUtil instance = new ServiceUtil();
 	
-	protected static String SERVICE_ADDRESS_URL = "http://36.7.67.250:9001/contact-service/logic";
+	String SERVICE_ADDRESS_URL = "http://36.7.67.250:9001/contact-service/logic";
 	
-	//private final static String SERVICE_ADDRESS_URL = "http://keyking-ty.xicp.net/contact-service/logic";
 	
-	protected final static String SERVICE_LOCAL_URL = "http://127.0.0.1:8080/contact-service/logic";
+	String SERVICE_LOCAL_URL = "http://127.0.0.1:8080/contact-service/logic";
 	
-	protected static final String READER_PACKAGE_NAME = "com.keyking.net.reader.impl.";
+	String READER_PACKAGE_NAME = "com.keyking.net.reader.impl.";
 	
-	//http://www.whatismyip.com.tw
+	String title= "×ÊÔ´ÏÂÔØ";
 	
 	public static ServiceUtil getInstance(){
 		return instance;
@@ -61,9 +60,14 @@ public class ServiceUtil implements Instances , HttpResponseListener{
 			Document document = XmlUtils.load(file);
 			Element element   = document.getDocumentElement();
 			SERVICE_ADDRESS_URL = XmlUtils.getAttribute(element,"url");
+			title = XmlUtils.getAttribute(element,"title");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String getTitle(){
+		return title;
 	}
 	
 	public void login(String username,String passward){

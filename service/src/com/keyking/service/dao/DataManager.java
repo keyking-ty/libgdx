@@ -33,7 +33,7 @@ public class DataManager {
 	public void init(String key){
 		isFirst = true;
 		dbManager = new DBManager();
-		dbManager.connect("userDB_" + key + ".xml");
+		dbManager.connect("userDB.xml");
 		clear();
 		load();
 	}
