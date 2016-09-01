@@ -14,8 +14,8 @@
      <bean id="CONTACT_DS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
          <property name="driverClassName" value="com.mysql.jdbc.Driver" />
          <property name="url" value="jdbc:mysql://127.0.0.1/service?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true" />
-         <property name="username" value="admin" />
-         <property name="password" value="askwTyx123TYxyyn" />
+         <property name="username" value="root" />
+         <property name="password" value="adminroot666" />
          <property name="initialSize" value="1" />
          <property name="maxActive" value="40" />
          <property name="maxIdle" value="10" />
